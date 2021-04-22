@@ -21,8 +21,9 @@ public class FXMLController {
     private URL location;
 
     @FXML // fx:id="boxMese"
-    private ChoiceBox<?> boxMese; // Value injected by FXMLLoader
-
+    private ChoiceBox<Integer> boxMese; // Value injected by FXMLLoader
+   
+    
     @FXML // fx:id="btnUmidita"
     private Button btnUmidita; // Value injected by FXMLLoader
 
