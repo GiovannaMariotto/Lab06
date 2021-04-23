@@ -9,7 +9,8 @@ public class TestModel {
 		System.out.println(m.getUmiditaMedia(12));
 		
 		System.out.println(m.trovaSequenza(5));
-		
+		System.out.println(m.getAllRilevamentiCittaNelMese(1,"Torino"));
+		System.out.println(m.calcolaUmiditaMedia(m.getAllRilevamentiCittaNelMese(2,"Torino")));
 
 	}
 

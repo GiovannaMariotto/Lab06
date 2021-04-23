@@ -6,6 +6,8 @@ package it.polito.tdp.meteo;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,8 +23,8 @@ public class FXMLController {
     private URL location;
 
     @FXML // fx:id="boxMese"
-    private ChoiceBox<Integer> boxMese; // Value injected by FXMLLoader
-   
+    private ChoiceBox<String> boxMese = new ChoiceBox(); // Value injected by FXMLLoader
+    
     
     @FXML // fx:id="btnUmidita"
     private Button btnUmidita; // Value injected by FXMLLoader
@@ -40,7 +42,9 @@ public class FXMLController {
 
     @FXML
     void doCalcolaUmidita(ActionEvent event) {
-
+    	this.txtResult.clear();
+    
+    	
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete

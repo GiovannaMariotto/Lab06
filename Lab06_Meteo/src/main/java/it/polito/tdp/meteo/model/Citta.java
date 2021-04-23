@@ -8,9 +8,19 @@ public class Citta {
 	private String nome;
 	private List<Rilevamento> rilevamenti;
 	private int counter = 0;
+	private double umiditaMedia;
 	
 	
 	
+	
+	public double getUmiditaMedia() {
+		return umiditaMedia;
+	}
+
+	public void setUmiditaMedia(double umiditaMedia) {
+		this.umiditaMedia = umiditaMedia;
+	}
+
 	public Citta(String nome) {
 		this.nome = nome;
 	}
