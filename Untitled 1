@@ -1,0 +1,39 @@
+				
+				**PRIMO APPROCCIO**
+-Problemma di ricerca, e non di ottimizzazione
+-Ricorsione: trovare nel dizionario
+
+Problemma(Input): 
+	String da riconoscere 'parola'
+	Contenuto della Board
+	Posizione della lettera iniziale ( se non c'è la lettera iniziale: la parola non esiste
+
+-Sol. Parziale:
+	La parte iniziale della parola, quella che ho già riconosciuto
+	Elenco delle posizione in cui si trovano le lettere gia riconosciute
+	
+-Sol. Totale:
+	La parola completamente riconosciuta (La prima che troviamo va bene!)
+	Elenco delle posizioni in cui si trovano le lettere della parola
+	
+Livello Ricorsione:
+	Numero di caratteri già riconosciuti
+	
+Condizioni di terminazione:
+	Livello = lunghezza della parola da riconoscere
+	Se viene trovata la soluzione --> interrompere subito la ricerca (provare la parola successiva)
+	
+Avvio della ricorsione:
+	Livello = 1;
+	Parto da una posizione che contiene la prima lettera della parola
+	
+Struttura dati che ci servono:
+	String da riconoscere 'parola'
+	Livello
+	List<Pos> 'percoso' corrispondente alla sequenza di caselle
+	
+	
+	
+	
+				**SECONDO APPROCCIO**
+-provare tutti i percorsi 

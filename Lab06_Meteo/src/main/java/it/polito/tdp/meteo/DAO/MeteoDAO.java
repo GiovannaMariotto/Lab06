@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,8 +42,10 @@ public class MeteoDAO {
 	}
 
 	public List<Rilevamento> getAllRilevamentiLocalitaMese(int mese, String localita) {
-		int counter =0;
+		LocalDate d1 = LocalDate.of(2013, mese, 01);
 		
+	
+		int counter=31;
 		if(mese==1||mese==3||mese==5||mese==7||mese==8||mese==10||mese==12) {
 			counter=31;
 		}else if(mese==2) {
@@ -50,42 +53,38 @@ public class MeteoDAO {
 		}else {
 			counter=30;
 		}
-		String sql = "SELECT * "
+		LocalDate d2 = LocalDate.of(2013, mese, counter);
+		
+		
+		
+		String sql = "SELECT s.Localita, s.data, s.Umidita "
 				+ "FROM situazione s "
-				+ "WHERE s.Localita=? AND s.DATA=?";
+				+ "WHERE s.localita=? AND MONTH(data)=?  ORDER BY data ASC\"";
 		
 		String data;
 		List<Rilevamento> r=new ArrayList<Rilevamento>();
+		Citta c = new Citta(localita);
 		try {
-		
-			for(int i=0;i<counter;i++) {
-				data="2013-"+mese+"-"+i;
 				Connection conn = ConnectDB.getConnection();
 				PreparedStatement st = conn.prepareStatement(sql);
 				st.setString(1, localita);
-				st.setString(2, data);
+				st.setString(2, Integer.toString(mese));
+				
 				ResultSet rs = st.executeQuery();
 				
-				if(rs!=null) {
-					while(rs.next()) {
-						Rilevamento r1 = new Rilevamento(rs.getString("Localita"),rs.getDate("Data"),rs.getInt("Umidita"));
-						r.add(r1);
+				while(rs.next()) {
+					Rilevamento r1 = new Rilevamento(rs.getString("Localita"),rs.getDate("Data"),rs.getInt("Umidita"));
+					r.add(r1);
 					}
-				}
 				
+				c.setRilevamenti(r);
 				rs.close();
 				st.close();
 				conn.close();
-			}
-			
-		
 			
 			
 		}catch(SQLException sqle) {
 			throw new RuntimeException(sqle);
-		}
-		if(r==null) {
-			return null;
 		}
 		
 		return r;
@@ -135,7 +134,13 @@ public class MeteoDAO {
 	
 
 	public List<Citta> getUmitaNelGiorno(int mese, int giorno){
-		String data ="2013-"+mese+"-"+giorno;
+		String data ;
+		if(mese>9) {
+			data ="2013-"+mese+"-"+giorno;
+		} else {
+			data ="2013-0"+mese+"-"+giorno;
+		}
+		
 		List<Citta> citta = new ArrayList<Citta>();
 		String sql = "SELECT s.Localita,s.Umidita "
 				+ "FROM situazione s "
@@ -161,6 +166,38 @@ public class MeteoDAO {
 		
 		return citta;
 		
+		
+	}
+
+	public List<Citta> getAllCitta(){
+		final String sql = "SELECT DISTINCT s.Localita "
+				+ "FROM situazione s "
+				+ "ORDER BY s.Localita";
+		
+		
+		List<Citta> result = new ArrayList<Citta>();
+		
+		try {
+			Connection con = ConnectDB.getConnection();
+			PreparedStatement st = con.prepareStatement(sql);
+			ResultSet rs = st.executeQuery();
+			
+			while(rs.next()) {
+				Citta c = new Citta(rs.getString("localita"));
+				result.add(c);
+			}
+			
+			rs.close();
+			st.close();
+			con.close();
+			
+			
+		} catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
+		
+		
+		return null;
 		
 	}
 }
