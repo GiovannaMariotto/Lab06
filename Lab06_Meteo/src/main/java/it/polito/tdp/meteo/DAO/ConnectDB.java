@@ -8,21 +8,16 @@ import java.sql.SQLException;
 public class ConnectDB {
 	
 	// check user e password
-	static private final String jdbcUrl = "jdbc:mysql://localhost/meteo";
+	static private final String jdbcUrl = "jdbc:mysql://localhost/meteo?user=root&password=gigika123";
 	
 	private static HikariDataSource ds;
 	
 	public static Connection getConnection() {
-		HikariConfig config = new HikariConfig();
-		config.setJdbcUrl(jdbcUrl);
-		config.setUsername("root");
-		config.setPassword("gigika123");
-		config.setHealthCheckProperties(null);
-		ds = new HikariDataSource(config);
+		
 		
 		try {
 			
-				Connection connection = ds.getConnection();
+				Connection connection = DriverManager.getConnection(jdbcUrl);
 				
 				return connection;
 

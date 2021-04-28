@@ -21,9 +21,9 @@ public class Model {
 	}
 
 	// of course you can change the String output with what you think works best
-	public String getUmiditaMedia(int mese) {
-		
-		return "TODO!";
+	public Double getUmiditaMedia(int mese, Citta c) {
+		MeteoDAO dao = new MeteoDAO();
+		return dao.getUmiditaMedia(mese, c);
 	}
 	
 	// of course you can change the String output with what you think works best
@@ -113,76 +113,19 @@ public class Model {
 		return false;
 	}
 
-	/**
-	 * Compara a umidade de duas cidades em um dia
-	 * 
-	 * @param giorno
-	 * @param c1 (cidade 1)
-	 * @param c2 (cidade 2)
-	 * @param c3 (cidade 3)
-	 * @return Obj Citta with lower umidita oppure null
-	 */
-	public Citta compareRilevamento(int giorno, Citta c1, Citta c2, Citta c3) {
-		//Comparazione tra le citta: ogni 3 giorni
-		int giorni =3;
-		
-		//First: Comparare i 3 primi giorni
-		int g1 = c1.getRilevamenti().get(giorno).getUmidita()+c1.getRilevamenti().get(giorno+1).getUmidita()+c1.getRilevamenti().get(giorno+2).getUmidita();
-		int g2 = c2.getRilevamenti().get(giorno).getUmidita()+ c2.getRilevamenti().get(giorno+1).getUmidita()+ c2.getRilevamenti().get(giorno+2).getUmidita();
-		int g3 = c3.getRilevamenti().get(giorno).getUmidita()+c3.getRilevamenti().get(giorno+1).getUmidita()+c3.getRilevamenti().get(giorno+2).getUmidita();
-		
-		//See if we can add more days ( until NUM_MAX_DAYS=6 in ogni citta )
-		if(g1<g2 && g1<g3) {
-			c1.setCounter(giorni);
-			if(this.addGiorni(giorno, c1, c2, c3).equals(c1) && giorni <= NUMERO_GIORNI_CITTA_MAX) {
-				c1.setCounter(giorni++);
-			} else
-				return c1;
-		} else if(g2<g1 && g2<g3) {
-			if(this.addGiorni(giorno, c1, c2, c3).equals(c2) && giorni <= NUMERO_GIORNI_CITTA_MAX) {
-				c2.setCounter(giorni++);
-			} else
-				return c2;
-		}else {
-			if(this.addGiorni(giorno, c1, c2, c3).equals(c3) && giorni <= NUMERO_GIORNI_CITTA_MAX) {
-				c3.setCounter(giorni++);
-			} else
-				return c3;
-		}
-	return null;
-
-		
-		
-	}
-	
-	public Citta addGiorni(int giorno, Citta c1, Citta c2, Citta c3) {
-		int g1 = c1.getRilevamenti().get(giorno).getUmidita();
-		int g2 = c2.getRilevamenti().get(giorno).getUmidita();
-		int g3 = c3.getRilevamenti().get(giorno).getUmidita();
-		if(g1<g2 && g1<g3) {
-			return c1;
-		}else if(g2<g1 && g2<g3) {
-			return c2;
-		}else {
-			return c3;
-		}
-		
-	}
-	
-	
  	public List<Rilevamento> getAllRilevamentiCittaNelMese(int mese, String localita){
 		Citta c = new Citta(localita);
 		c.setRilevamenti(dao.getAllRilevamentiLocalitaMese(mese, localita));
 		return c.getRilevamenti();
 	}
 	
-	public int calcolaUmiditaMedia(List<Rilevamento> lista) {
+	public Double calcolaUmiditaMedia(List<Rilevamento> lista) {
 		int n = lista.size();
 		double somma=0;
 		for(Rilevamento r : lista) {
 			somma+=r.getUmidita();
 		}
-		return(int)(somma/n);
+		return(Double)(somma/n);
 	}
 	
 	public List<Citta> getLeCitta(){

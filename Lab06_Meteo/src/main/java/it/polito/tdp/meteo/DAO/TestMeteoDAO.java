@@ -12,11 +12,11 @@ public class TestMeteoDAO {
 		MeteoDAO dao = new MeteoDAO();
 
 		//List<Rilevamento> list = dao.getAllRilevamenti();
-		List<Citta> listaR = dao.getUmiditaMediadelleCitta(11);
-
+		List<Citta> listaR = dao.getAllCitta();
+		
 		// STAMPA: localita, giorno, mese, anno, umidita (%)
 		for (Citta r : listaR) {
-			System.out.format("%-10s %2td/%2$2tm/%2$4tY %3d%%\n",r.getNome(),  r.getUmiditaMedia());
+			System.out.printf(r.getNome() +"  "+ dao.getUmiditaMedia(2,r) +"\n");
 		}
 		
 //		System.out.println(dao.getAllRilevamentiLocalitaMese(1, "Genova"));

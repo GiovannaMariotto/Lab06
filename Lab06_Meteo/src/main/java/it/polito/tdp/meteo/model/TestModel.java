@@ -10,7 +10,7 @@ public class TestModel {
 		List<Citta> leCitta = m.getLeCitta();
 		//System.out.println(m.getUmiditaMedia(12));
 		for (Citta c:leCitta) {
-			System.out.println(m.getUmiditaMedia(12));
+			System.out.println(m.getUmiditaMedia(12,c));
 		}
 		System.out.println(m.trovaSequenza(5));
 		//System.out.println(m.getAllRilevamentiCittaNelMese(1,"Torino"));

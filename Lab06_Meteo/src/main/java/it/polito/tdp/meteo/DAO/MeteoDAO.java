@@ -13,6 +13,27 @@ import it.polito.tdp.meteo.model.Rilevamento;
 
 public class MeteoDAO {
 	
+	public Double getUmiditaMedia(int mese, Citta citta) {
+		final String sql = "SELECT AVG(umidita) AS U "
+				+ "FROM situazione s "
+				+ "WHERE s.Localita=? AND MONTH(DATA)=?";
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setString(1, citta.getNome());
+			st.setString(2, Integer.toString(mese) );
+			ResultSet rs = st.executeQuery();
+			rs.next();
+			Double u = rs.getDouble("U");
+			conn.close();
+			return u;
+			
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
+		
+	}
+	
 	public List<Rilevamento> getAllRilevamenti() {
 
 		final String sql = "SELECT Localita, Data, Umidita FROM situazione ORDER BY data ASC";
@@ -42,28 +63,16 @@ public class MeteoDAO {
 	}
 
 	public List<Rilevamento> getAllRilevamentiLocalitaMese(int mese, String localita) {
-		LocalDate d1 = LocalDate.of(2013, mese, 01);
-		
 	
-		int counter=31;
-		if(mese==1||mese==3||mese==5||mese==7||mese==8||mese==10||mese==12) {
-			counter=31;
-		}else if(mese==2) {
-			counter=28;
-		}else {
-			counter=30;
-		}
-		LocalDate d2 = LocalDate.of(2013, mese, counter);
-		
-		
 		
 		String sql = "SELECT s.Localita, s.data, s.Umidita "
 				+ "FROM situazione s "
-				+ "WHERE s.localita=? AND MONTH(data)=?  ORDER BY data ASC\"";
+				+ "WHERE s.localita=? AND MONTH(data)=?  ORDER BY data ASC";
 		
-		String data;
+		
+		
 		List<Rilevamento> r=new ArrayList<Rilevamento>();
-		Citta c = new Citta(localita);
+		
 		try {
 				Connection conn = ConnectDB.getConnection();
 				PreparedStatement st = conn.prepareStatement(sql);
@@ -76,8 +85,7 @@ public class MeteoDAO {
 					Rilevamento r1 = new Rilevamento(rs.getString("Localita"),rs.getDate("Data"),rs.getInt("Umidita"));
 					r.add(r1);
 					}
-				
-				c.setRilevamenti(r);
+			
 				rs.close();
 				st.close();
 				conn.close();
@@ -197,7 +205,7 @@ public class MeteoDAO {
 		}
 		
 		
-		return null;
+		return result;
 		
 	}
 }
